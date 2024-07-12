@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What do you have TO-DO Today</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+    <div id="top">
+        <header>
+            <h1>Welcome to our TO-DO list</h1>
+            <p>Track your tasks today! Be in control of your day</p>
+        </header>
+    </div>
+
+    <div id="middle">
+        <form action="/tasks" method="POST">
+            <input type="text" name="title" placeholder="Add Task">
+            <button type="submit">Add</button>
+        </form>
+    </div>
+
+    <ul>
+        <% tasks.forEach(task => { %>
+        <li>
+            <div>
+                <form action="/tasks/<%= task._id %>?_method=PUT" method="POST" style="display: inline;" onsubmit="submitForm(event)">
+                    <input type="checkbox" name="completed" value="<%= !task.completed %>" <%= task.completed ? 'checked' : '' %> onchange="this.form.submit()">
+                </form>
+                <%= task.title %> <%= task.description ? `: ${task.description}` : '' %>
+                <% if (task.completedAt) { %>
+                    <span>(Completed on <%= new Date(task.completedAt).toLocaleString() %>)</span>
+                <% } %>
+                <% if (task.deletedAt) { %>
+                    <span>(Deleted on <%= new Date(task.deletedAt).toLocaleString() %>)</span>
+                <% } %>
+            </div>
+            <div>
+                <button onclick="toggleEditForm('<%= task._id %>')">Edit</button>
+                <form action="/tasks/<%= task._id %>?_method=DELETE" method="POST" style="display: inline;">
+                    <button type="submit">Delete</button>
+                </form>
+                <form id="edit-form-<%= task._id %>" class="edit-form" action="/tasks/<%= task._id %>?_method=PUT" method="POST" onsubmit="submitForm(event)">
+                    <input type="text" name="title" value="<%= task.title %>">
+                    <input type="text" name="description" value="<%= task.description %>">
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+        </li>
+        <% }) %>
+    </ul>
+
+    <script src="/scripts.js"></script>
+</body>
+</html>
