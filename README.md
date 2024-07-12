@@ -78,4 +78,3 @@ For any inquiries, please reach out to [ololadetemi](https://github.com/ololadet
 
 ```
 
-Save this content in a file named `README.md` in the root directory of your project. This file will provide clear instructions and documentation for anyone using or contributing to your project.
